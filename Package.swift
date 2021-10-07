@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftyOpus",
     platforms: [
-        .macOS(.v15_10), .iOS(.v12_4)
+        .macOS(.v10_15), .iOS(.v12)
     ],
     products: [
         .library(
