@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1725463225BE0DC8004EC45A"
-               BuildableName = "YbridOpus.framework"
+               BuildableName = "SwiftyOpus.framework"
                BlueprintName = "opus_catalyst"
                ReferencedContainer = "container:opus-swift.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1725463225BE0DC8004EC45A"
-            BuildableName = "YbridOpus.framework"
+            BuildableName = "SwiftyOpus.framework"
             BlueprintName = "opus_catalyst"
             ReferencedContainer = "container:opus-swift.xcodeproj">
          </BuildableReference>
