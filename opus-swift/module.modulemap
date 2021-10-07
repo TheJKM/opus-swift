@@ -23,7 +23,7 @@
 // SOFTWARE.
 //
 
-framework module YbridOpus {
+framework module SwiftyOpus {
     umbrella header "opus_swift.h"
     export *
 }

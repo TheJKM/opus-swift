@@ -3,6 +3,7 @@
 # MIT License
 
 # Copyright (c) 2021 Ybrid®, a Hybrid Dynamic Live Audio Technology
+# Modified 2021 by Johannes Kreutz
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +31,9 @@
 # - git clone of https://github.com/xiph/opus in directory ../opus
 # - checked iosSDKVersion and osxSDKVersion 
 
-iosSDKVersion="14.4"
-osxSDKVersion="11.1"
-opusDownload="https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz"
+iosSDKVersion="15.0"
+osxSDKVersion="11.3"
+opusDownload="https://github.com/xiph/opus/archive/refs/tags/v1.3.1.tar.gz"
 here=$(pwd)
 
 rm -f opus-*.gz
@@ -69,9 +70,9 @@ generateLibopus()
     make clean > $logfile
     
     if [[ $sdkname =~ "iPhone" ]]; then 
-        minversion="-miphoneos-version-min=9.0"
+        minversion="-miphoneos-version-min=12.4"
     else # contains "Mac"
-        minversion="-mmacosx-version-min=10.10"
+        minversion="-mmacosx-version-min=15.10"
     fi
     ./configure CC=clang --enable-float-approx --disable-shared --enable-static --with-pic \
         --disable-extra-programs --disable-doc --host=$host \
@@ -102,9 +103,9 @@ fatProductIos="libopus_ios.a"
 echo "\n==========================="
 echo "generate $fatProductIos ..."
 generateLibopus "x86_64-apple-darwin" "x86_64" $sdkSimulator
-generateLibopus "x86_64-apple-darwin" "i386" $sdkSimulator
 generateLibopus "arm-apple-darwin" "armv7" $sdkPhone
 generateLibopus "arm-apple-darwin" "arm64" $sdkPhone
+generateLibopus "arm-apple-darwin" "arm64e" $sdkPhone
 cd $tmp
 products=`ls | grep libopus | grep iPhone`
 echo "generating $fatProductIos from ${products} ..." 
@@ -120,7 +121,7 @@ fatProductMac="libopus_osx.a"
 echo "\n==========================="
 echo "generate $fatProductMac ..."
 generateLibopus "x86_64-apple-darwin20.2.0" "x86_64" $sdkMac
-generateLibopus "aarch64-apple-darwin20.0.0" "arm64" $sdkMac
+generateLibopus "aarch64-apple-darwin20.0.0" "arm64e" $sdkMac
 cd $tmp
 products=`ls | grep libopus | grep Mac`
 echo "generating $fatProductMac from ${products} ..." 
@@ -136,6 +137,7 @@ fatProductCatalyst="libopus_catalyst.a"
 echo "\n==========================="
 echo "generate $fatProductCatalyst ..."
 generateLibopus "x86_64-apple-darwin20.2.0" "x86_64h" $sdkMac
+generateLibopus "x86_64-apple-darwin20.2.0" "arm64e" $sdkMac
 cd $tmp
 products=`ls | grep libopus | grep x86_64h`
 echo "generating $fatProductCatalyst from ${products} ..." 

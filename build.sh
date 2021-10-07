@@ -3,6 +3,7 @@
 # MIT License
 
 # Copyright (c) 2021 Ybrid®, a Hybrid Dynamic Live Audio Technology
+# Modified 2021 by Johannes Kreutz
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +36,7 @@ generatedPath="Products/Library/Frameworks"
 
 # path and name of intermediatly built frameworks 
 builtPath="$dd/Build/Products" 
-framework=YbridOpus.framework
+framework=SwiftyOpus.framework
 
 rm -rfd $dd
 mkdir -p "$archivesPath"
@@ -62,7 +63,7 @@ platform=maccatalyst
 scheme=opus_catalyst
 echo "building for $platform..."
 #-sdk macosx ?
-xcodebuild archive $pj -scheme $scheme -archs="x86_64h" -destination "generic/platform=macOS,variant=Mac Catalyst,name=Any Mac" -derivedDataPath $dd \
+xcodebuild archive $pj -scheme $scheme -archs="x86_64h arm64e" -destination "generic/platform=macOS,variant=Mac Catalyst,name=Any Mac" -derivedDataPath $dd \
     -archivePath "$archivesPath/$platform.xcarchive" $opts > "build-$platform.log"
 cp -R "$archivesPath/$platform.xcarchive/$generatedPath" "$builtPath/Archive-$platform"
 
@@ -74,7 +75,7 @@ xcodebuild archive $pj -scheme $scheme -destination='My Mac' -sdk $platform -der
 cp -R "$archivesPath/$platform.xcarchive/$generatedPath" "$builtPath/Archive-$platform"
 
 # name of final xcframework
-xcframework=YbridOpus.xcframework
+xcframework=SwiftyOpus.xcframework
 rm -rfd $xcframework
 
 products=`ls $builtPath`
