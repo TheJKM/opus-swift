@@ -18,12 +18,13 @@ DerivedData
 *.xccheckout
 
 # by nacamar GmbH
-# prepare.sh, build.sh steps and SPM create some files that don't need version control 
+# prepare.sh, build.sh steps and SPM create some files that don't need version control
 *.log
 opus-?.?.?
 prepare
 opus-swift/libs/libopus_*.a
 opus-swift/include/*
+!opus-swift/include/.gitkeep
 *.xcframework
 *.zip
 *.gz
