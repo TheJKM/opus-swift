@@ -33,6 +33,7 @@ CURRENT_PROJECT_VERSION = 1
 
 
 ARCHS = arm64 arm64e x86_64 x86_64h
+EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
 SUPPORTED_PLATFORMS = iphoneos iphonesimulator macosx
 
 IPHONEOS_DEPLOYMENT_TARGET = 12.4
