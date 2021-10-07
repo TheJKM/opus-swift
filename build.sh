@@ -26,7 +26,9 @@
 # 
 # Generates opus_swift.xcframework from opus.xcodeproj.
 # Usage: no parameters, settings mostly defined in xcode project
-# 
+#
+
+set -e 
 
 opts="SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES" 
 

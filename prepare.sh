@@ -31,15 +31,18 @@
 # - git clone of https://github.com/xiph/opus in directory ../opus
 # - checked iosSDKVersion and osxSDKVersion 
 
+set -e
+
 iosSDKVersion="15.0"
 osxSDKVersion="11.3"
-opusDownload="https://github.com/xiph/opus/archive/refs/tags/v1.3.1.tar.gz"
+opusVersion="1.3.1"
+opusDownload="https://github.com/xiph/opus/archive/refs/tags/v$opusVersion.tar.gz"
 here=$(pwd)
 
-rm -f opus-*.gz
+rm -f `basename $opusDownload`
 wget $opusDownload
 
-libopusDir=`basename $opusDownload | sed "s/\.tar.gz$//"` 
+libopusDir="opus-$opusVersion" 
 rm -rf $libopusDir
 tar -xvzf `basename $opusDownload`
 echo "opus sources ready in $libopusDir" 
@@ -51,7 +54,7 @@ opusArtifact=.libs/libopus.a
 opusHeaders="$opuspath/include"
 
 tmp=./prepare
-fatLibsDest=opus-swift/libs
+fatLibsDest=opus-swift/libs/
 
 generateLibopus()
 {
@@ -67,19 +70,20 @@ generateLibopus()
     logfile="$here/$tmp/generate_${host}_${arch}_$sdkname.log"
 
     cd $opuspath
-    make clean > $logfile
     
     if [[ $sdkname =~ "iPhone" ]]; then 
         minversion="-miphoneos-version-min=12.4"
     else # contains "Mac"
         minversion="-mmacosx-version-min=15.10"
     fi
+    #cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CFLAGS=" -arch $arch -Ofast -flto -g -fPIE $minversion -isysroot $sdk" -DCMAKE_LDFLAGS=" -flto -fPIE $minversion" -DCMAKE_SYSTEM_NAME=$host .
+    ./autogen.sh
     ./configure CC=clang --enable-float-approx --disable-shared --enable-static --with-pic \
         --disable-extra-programs --disable-doc --host=$host \
         CFLAGS=" -arch $arch -Ofast -flto -g -fPIE $minversion -isysroot $sdk" \
         LDFLAGS=" -flto -fPIE $minversion" >> $logfile
 
-    make >> $logfile
+    make -j >> $logfile
 
     cd $here
     cp "$opuspath/$opusArtifact" "$tmp/$product"
@@ -93,7 +97,6 @@ sdkPhone="/$xcodePlatforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$iosSDKVersi
 sdkMac="/$xcodePlatforms/MacOSX.platform/Developer/SDKs/MacOSX$osxSDKVersion.sdk"
 
 cd $opuspath
-make distclean
 cd $here
 rm -rf $tmp
 mkdir -p $tmp
@@ -103,9 +106,7 @@ fatProductIos="libopus_ios.a"
 echo "\n==========================="
 echo "generate $fatProductIos ..."
 generateLibopus "x86_64-apple-darwin" "x86_64" $sdkSimulator
-generateLibopus "arm-apple-darwin" "armv7" $sdkPhone
 generateLibopus "arm-apple-darwin" "arm64" $sdkPhone
-generateLibopus "arm-apple-darwin" "arm64e" $sdkPhone
 cd $tmp
 products=`ls | grep libopus | grep iPhone`
 echo "generating $fatProductIos from ${products} ..." 
@@ -120,8 +121,8 @@ echo "\n==========================="
 fatProductMac="libopus_osx.a"
 echo "\n==========================="
 echo "generate $fatProductMac ..."
-generateLibopus "x86_64-apple-darwin20.2.0" "x86_64" $sdkMac
-generateLibopus "aarch64-apple-darwin20.0.0" "arm64e" $sdkMac
+generateLibopus "x86_64-apple-darwin" "x86_64" $sdkMac
+generateLibopus "aarch64-apple-darwin" "arm64e" $sdkMac
 cd $tmp
 products=`ls | grep libopus | grep Mac`
 echo "generating $fatProductMac from ${products} ..." 
@@ -136,8 +137,8 @@ echo "\n==========================="
 fatProductCatalyst="libopus_catalyst.a"
 echo "\n==========================="
 echo "generate $fatProductCatalyst ..."
-generateLibopus "x86_64-apple-darwin20.2.0" "x86_64h" $sdkMac
-generateLibopus "x86_64-apple-darwin20.2.0" "arm64e" $sdkMac
+generateLibopus "x86_64-apple-darwin" "x86_64h" $sdkMac
+generateLibopus "aarch64-apple-darwin" "arm64e" $sdkMac
 cd $tmp
 products=`ls | grep libopus | grep x86_64h`
 echo "generating $fatProductCatalyst from ${products} ..." 
@@ -154,7 +155,7 @@ cd $here
 echo "copy headers into opus-swift.xcodeproj"
 for f in $opusHeaders/*.h; do
     file=`basename $f`
-    cp -v $f ./opus-swift/include
+    cp -v $f ./opus-swift/include/
 done
 echo "opus-swift.xcodeproj is ready"
 echo "done."
