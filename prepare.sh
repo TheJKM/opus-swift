@@ -74,7 +74,7 @@ generateLibopus()
     if [[ $sdkname =~ "iPhone" ]]; then 
         minversion="-miphoneos-version-min=12.4"
     else # contains "Mac"
-        minversion="-mmacosx-version-min=15.10"
+        minversion="-mmacosx-version-min=10.15"
     fi
     #cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CFLAGS=" -arch $arch -Ofast -flto -g -fPIE $minversion -isysroot $sdk" -DCMAKE_LDFLAGS=" -flto -fPIE $minversion" -DCMAKE_SYSTEM_NAME=$host .
     ./autogen.sh
