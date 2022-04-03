@@ -122,7 +122,7 @@ fatProductMac="libopus_osx.a"
 echo "\n==========================="
 echo "generate $fatProductMac ..."
 generateLibopus "x86_64-apple-darwin" "x86_64" $sdkMac
-generateLibopus "aarch64-apple-darwin" "arm64e" $sdkMac
+generateLibopus "aarch64-apple-darwin" "arm64" $sdkMac
 cd $tmp
 products=`ls | grep libopus | grep Mac`
 echo "generating $fatProductMac from ${products} ..." 
@@ -137,10 +137,10 @@ echo "\n==========================="
 fatProductCatalyst="libopus_catalyst.a"
 echo "\n==========================="
 echo "generate $fatProductCatalyst ..."
-generateLibopus "x86_64-apple-darwin" "x86_64" $sdkMac
-generateLibopus "aarch64-apple-darwin" "arm64e" $sdkMac
+generateLibopus "x86_64-apple-darwin" "x86_64h" $sdkMac
+#generateLibopus "aarch64-apple-darwin" "arm64e" $sdkMac
 cd $tmp
-products=`ls | grep libopus | grep x86_64h`
+products=`ls | grep libopus | grep Mac | grep -e arm64e -e x86_64h`
 echo "generating $fatProductCatalyst from ${products} ..." 
 lipo -create ${products} -output $fatProductCatalyst
 cd $here

@@ -65,7 +65,7 @@ platform=maccatalyst
 scheme=opus_catalyst
 echo "building for $platform..."
 #-sdk macosx ?
-xcodebuild archive $pj -scheme $scheme -archs="x86_64 arm64e" -destination "generic/platform=macOS,variant=Mac Catalyst,name=Any Mac" -derivedDataPath $dd \
+xcodebuild archive $pj -scheme $scheme -archs="x86_64h" -destination "generic/platform=macOS,variant=Mac Catalyst,name=Any Mac" -derivedDataPath $dd \
     -archivePath "$archivesPath/$platform.xcarchive" $opts > "build-$platform.log"
 cp -R "$archivesPath/$platform.xcarchive/$generatedPath" "$builtPath/Archive-$platform"
 

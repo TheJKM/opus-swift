@@ -24,7 +24,7 @@
 //
 
 import XCTest
-import YbridOpus
+import SwiftyOpus
 
 class opus_swiftPlatformTests: XCTestCase {
 
