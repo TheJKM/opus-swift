@@ -33,8 +33,8 @@
 
 set -e
 
-iosSDKVersion="15.0"
-osxSDKVersion="11.3"
+iosSDKVersion="15.4"
+osxSDKVersion="12.3"
 opusVersion="1.3.1"
 opusDownload="https://github.com/xiph/opus/archive/refs/tags/v$opusVersion.tar.gz"
 here=$(pwd)
@@ -137,7 +137,7 @@ echo "\n==========================="
 fatProductCatalyst="libopus_catalyst.a"
 echo "\n==========================="
 echo "generate $fatProductCatalyst ..."
-generateLibopus "x86_64-apple-darwin" "x86_64h" $sdkMac
+generateLibopus "x86_64-apple-darwin" "x86_64" $sdkMac
 generateLibopus "aarch64-apple-darwin" "arm64e" $sdkMac
 cd $tmp
 products=`ls | grep libopus | grep x86_64h`
